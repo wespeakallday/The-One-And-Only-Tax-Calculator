@@ -109,13 +109,24 @@
                 border-radius: 12px !important;
             }
 
-            /* Ensure input values are visible */
+            /* Ensure input values are visible and properly spaced from the prefix */
             input {
                 border: none !important;
                 background: transparent !important;
-                padding: 0 !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                padding-right: 0 !important;
+                /* We maintain enough left padding to avoid overlapping the absolute-positioned 'R' prefix */
+                padding-left: 2.8rem !important; 
                 font-weight: bold !important;
                 color: #000 !important;
+                height: auto !important;
+                min-height: 0 !important;
+            }
+
+            /* Hide placeholders entirely in print for a cleaner report look */
+            input::placeholder {
+                color: transparent !important;
             }
 
             .recharts-responsive-container {
