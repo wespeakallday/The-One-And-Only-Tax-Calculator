@@ -129,7 +129,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex bg-slate-100 p-1.5 rounded-2xl w-full md:w-auto overflow-x-auto border border-slate-200">
+          <div className="flex bg-slate-100 p-1.5 rounded-2xl w-full md:auto overflow-x-auto border border-slate-200">
             {TAX_YEARS.map((year) => (
               <button
                 key={year}
@@ -190,13 +190,13 @@ const App: React.FC = () => {
 
             <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
               <h2 className="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-6">Revenue Streams</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
-                <NumberInput label="Primary Salary" value={income.annualSalary} onChange={(val) => setIncome({...income, annualSalary: val})} />
-                <NumberInput label="Commission Earnings" value={income.annualCommission} onChange={(val) => setIncome({...income, annualCommission: val})} />
-                <NumberInput label="Contractor Fees" value={income.annualContractorIncome} onChange={(val) => setIncome({...income, annualContractorIncome: val})} />
-                <NumberInput label="Travel Allowance" value={income.annualTravelAllowance} onChange={(val) => setIncome({...income, annualTravelAllowance: val})} />
-                <NumberInput label="Bonus Payouts" value={income.bonus} onChange={(val) => setIncome({...income, bonus: val})} />
-                <NumberInput label="PAYE Contributions" value={income.taxPaidAlready} onChange={(val) => setIncome({...income, taxPaidAlready: val})} helpText="Cumulative tax paid to date" />
+              <div className="grid grid-cols-1 gap-x-6">
+                <NumberInput label="Primary Salary" value={income.annualSalary} onChange={(val) => setIncome({...income, annualSalary: val})} placeholder="0.00" />
+                <NumberInput label="Commission Earnings" value={income.annualCommission} onChange={(val) => setIncome({...income, annualCommission: val})} placeholder="0.00" />
+                <NumberInput label="Contractor Fees" value={income.annualContractorIncome} onChange={(val) => setIncome({...income, annualContractorIncome: val})} placeholder="0.00" />
+                <NumberInput label="Travel Allowance" value={income.annualTravelAllowance} onChange={(val) => setIncome({...income, annualTravelAllowance: val})} placeholder="0.00" />
+                <NumberInput label="Bonus Payouts" value={income.bonus} onChange={(val) => setIncome({...income, bonus: val})} placeholder="0.00" />
+                <NumberInput label="PAYE Contributions" value={income.taxPaidAlready} onChange={(val) => setIncome({...income, taxPaidAlready: val})} helpText="Cumulative tax paid to date" placeholder="0.00" />
               </div>
             </section>
 
@@ -205,21 +205,20 @@ const App: React.FC = () => {
               <div className="space-y-6">
                 <div className="p-6 bg-slate-50 rounded-3xl border border-slate-200 shadow-sm">
                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-6 border-l-4 border-orange-500 pl-3">Statutory Relief</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <NumberInput label="Retirement Fund" value={deductions.retirementAnnuity} onChange={(val) => setDeductions({...deductions, retirementAnnuity: val})} />
-                    <NumberInput label="Med Members" prefix="#" value={deductions.medicalAidMembers} onChange={(val) => setDeductions({...deductions, medicalAidMembers: val})} />
-                    <NumberInput label="Dependents" prefix="#" value={deductions.medicalAidDependents} onChange={(val) => setDeductions({...deductions, medicalAidDependents: val})} />
+                  <div className="grid grid-cols-1 gap-5">
+                    <NumberInput label="Retirement Fund" value={deductions.retirementAnnuity} onChange={(val) => setDeductions({...deductions, retirementAnnuity: val})} placeholder="0.00" />
+                    <NumberInput label="Med Members" prefix="#" value={deductions.medicalAidMembers} onChange={(val) => setDeductions({...deductions, medicalAidMembers: val})} placeholder="0" />
+                    <NumberInput label="Dependents" prefix="#" value={deductions.medicalAidDependents} onChange={(val) => setDeductions({...deductions, medicalAidDependents: val})} placeholder="0" />
                   </div>
                 </div>
 
                 <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm border-t-4 border-t-orange-500">
                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-6">Business Operations</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <NumberInput label="Contractor Costs" value={deductions.contractorExpenses} onChange={(val) => setDeductions({...deductions, contractorExpenses: val})} />
-                    <NumberInput label="Travel Log Business Kms" prefix="#" value={deductions.businessKms} onChange={(val) => setDeductions({...deductions, businessKms: val})} />
-                    <div className="col-span-2">
-                       <NumberInput label="Vehicle Purchase Value" value={deductions.vehicleValue} onChange={(val) => setDeductions({...deductions, vehicleValue: val})} helpText="Total value incl. VAT for scale calculation" />
-                    </div>
+                  <div className="grid grid-cols-1 gap-x-5">
+                    <NumberInput label="Contractor Costs" value={deductions.contractorExpenses} onChange={(val) => setDeductions({...deductions, contractorExpenses: val})} placeholder="0.00" />
+                    <NumberInput label="Commission Expenses" value={deductions.commissionExpenses} onChange={(val) => setDeductions({...deductions, commissionExpenses: val})} placeholder="0.00" />
+                    <NumberInput label="Travel Log Business Kms" prefix="#" value={deductions.businessKms} onChange={(val) => setDeductions({...deductions, businessKms: val})} placeholder="0" />
+                    <NumberInput label="Vehicle Purchase Value" value={deductions.vehicleValue} onChange={(val) => setDeductions({...deductions, vehicleValue: val})} helpText="Total value incl. VAT" placeholder="0.00" />
                   </div>
                 </div>
 
@@ -235,12 +234,12 @@ const App: React.FC = () => {
                     </label>
                   </div>
                   {deductions.wfhEnabled && (
-                    <div className="grid grid-cols-2 gap-x-5 animate-fadeIn">
-                      <NumberInput label="Total Home m²" prefix="#" value={deductions.wfhTotalArea} onChange={(val) => setDeductions({...deductions, wfhTotalArea: val})} />
-                      <NumberInput label="Dedicated Office m²" prefix="#" value={deductions.wfhOfficeArea} onChange={(val) => setDeductions({...deductions, wfhOfficeArea: val})} />
-                      <div className="col-span-2 grid grid-cols-2 gap-x-5 mt-2">
-                        <NumberInput label="Rent / Interest" value={deductions.wfhRentInterest} onChange={(val) => setDeductions({...deductions, wfhRentInterest: val})} />
-                        <NumberInput label="Utilities / Cleaning" value={deductions.wfhElectricityWater + deductions.wfhCleaning} onChange={(val) => setDeductions({...deductions, wfhElectricityWater: val})} />
+                    <div className="grid grid-cols-1 gap-x-5 animate-fadeIn">
+                      <NumberInput label="Total Home m²" prefix="#" value={deductions.wfhTotalArea} onChange={(val) => setDeductions({...deductions, wfhTotalArea: val})} placeholder="0" />
+                      <NumberInput label="Dedicated Office m²" prefix="#" value={deductions.wfhOfficeArea} onChange={(val) => setDeductions({...deductions, wfhOfficeArea: val})} placeholder="0" />
+                      <div className="grid grid-cols-1 gap-x-5 mt-2">
+                        <NumberInput label="Rent / Interest" value={deductions.wfhRentInterest} onChange={(val) => setDeductions({...deductions, wfhRentInterest: val})} placeholder="0.00" />
+                        <NumberInput label="Utilities / Cleaning" value={deductions.wfhElectricityWater + deductions.wfhCleaning} onChange={(val) => setDeductions({...deductions, wfhElectricityWater: val})} placeholder="0.00" />
                       </div>
                     </div>
                   )}
