@@ -278,12 +278,12 @@ const App: React.FC = () => {
                 </div>
                 <div className="space-y-6">
                   {chartData.map((item) => (
-                    <div key={item.name} className="flex justify-between items-center p-5 bg-slate-50 border border-slate-100 rounded-2xl group hover:border-orange-200 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-                        <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">{item.name}</span>
+                    <div key={item.name} className="flex justify-between items-center p-6 bg-slate-50 border border-slate-100 rounded-2xl group hover:border-orange-200 transition-all">
+                      <div className="flex items-center gap-4 flex-1 min-w-0 mr-4">
+                        <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }}></div>
+                        <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest truncate">{item.name}</span>
                       </div>
-                      <span className="text-sm font-black text-slate-900">{new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 }).format(item.value)}</span>
+                      <span className="text-sm font-black text-slate-900 whitespace-nowrap">{new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 }).format(item.value)}</span>
                     </div>
                   ))}
                 </div>
@@ -300,9 +300,6 @@ const App: React.FC = () => {
                 <div>
                   <h2 className="text-[12px] font-black text-[#1a1a1a] uppercase tracking-[0.4em]">Official Statement of Account</h2>
                   <p className="text-[10px] text-slate-400 font-bold uppercase mt-2 tracking-widest">Client Ref: Assessment_{selectedYear}</p>
-                </div>
-                <div className="bg-orange-50 border border-orange-100 px-4 py-2 rounded-xl">
-                   <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest">Confidential Analysis</span>
                 </div>
               </div>
 
