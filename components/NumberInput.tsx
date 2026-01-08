@@ -17,13 +17,13 @@ const NumberInput: React.FC<NumberInputProps> = ({ label, value, onChange, prefi
       </label>
       <div className="relative rounded-2xl">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-          <span className="text-orange-500 font-black text-xs">{prefix}</span>
+          <span className="text-orange-500 font-black text-sm">{prefix}</span>
         </div>
         <input
           type="number"
           value={value === 0 ? '' : value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="block w-full rounded-2xl border-0 py-4 pl-10 pr-4 text-slate-900 bg-white ring-1 ring-inset ring-slate-200 placeholder:text-slate-300 focus:ring-2 focus:ring-inset focus:ring-[#ff4d29] sm:text-sm transition-all hover:ring-slate-300 font-bold"
+          className="block w-full rounded-2xl border-0 py-4 pl-12 pr-4 text-slate-900 bg-white ring-1 ring-inset ring-slate-200 placeholder:text-slate-300 focus:ring-2 focus:ring-inset focus:ring-[#ff4d29] sm:text-sm transition-all hover:ring-slate-300 font-bold"
           placeholder="0.00"
         />
       </div>
