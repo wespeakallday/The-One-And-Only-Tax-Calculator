@@ -97,8 +97,7 @@ const App: React.FC = () => {
   const currencyFormat = (val: number) => new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(val);
 
   return (
-    <div className="min-h-screen pb-12 bg-slate-50">
-      {/* Site Header Nav - Replaced with a single redirect button */}
+    <div className="min-h-screen pb-20 bg-slate-50 flex flex-col">
       <nav className="bg-[#1a1a1a] text-white py-3 px-6 border-b border-orange-500/30 no-print flex justify-center">
         <a 
           href="https://www.paylesstax.co.za" 
@@ -148,7 +147,7 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 mt-10 main-content">
+      <main className="max-w-7xl mx-auto px-6 mt-10 main-content flex-grow">
         <div className="mb-8 flex flex-col md:flex-row justify-between items-end gap-4 no-print">
           <div>
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">Professional Assessment Tool</h2>
@@ -167,6 +166,7 @@ const App: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          {/* INPUT COLUMN */}
           <div className="lg:col-span-5 space-y-8">
             <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
               <h2 className="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-6">Assessee Profile</h2>
@@ -205,12 +205,10 @@ const App: React.FC = () => {
               <div className="space-y-6">
                 <div className="p-6 bg-slate-50 rounded-3xl border border-slate-200 shadow-sm">
                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-6 border-l-4 border-orange-500 pl-3">Statutory Relief</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                     <NumberInput label="Retirement Fund" value={deductions.retirementAnnuity} onChange={(val) => setDeductions({...deductions, retirementAnnuity: val})} />
-                    <div className="grid grid-cols-2 gap-4">
-                      <NumberInput label="Med Members" prefix="#" value={deductions.medicalAidMembers} onChange={(val) => setDeductions({...deductions, medicalAidMembers: val})} />
-                      <NumberInput label="Dependents" prefix="#" value={deductions.medicalAidDependents} onChange={(val) => setDeductions({...deductions, medicalAidDependents: val})} />
-                    </div>
+                    <NumberInput label="Med Members" prefix="#" value={deductions.medicalAidMembers} onChange={(val) => setDeductions({...deductions, medicalAidMembers: val})} />
+                    <NumberInput label="Dependents" prefix="#" value={deductions.medicalAidDependents} onChange={(val) => setDeductions({...deductions, medicalAidDependents: val})} />
                   </div>
                 </div>
 
@@ -251,7 +249,8 @@ const App: React.FC = () => {
             </section>
           </div>
 
-          <div className="lg:col-span-7 space-y-8">
+          {/* RESULTS COLUMN - Forced to new page on print if needed via CSS classes */}
+          <div className="lg:col-span-7 space-y-8 print-force-new-page">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ResultCard label="Monthly Net Pay" value={results.monthlyTakeHome} highlight={true} subText="Total monthly disposable income" />
               <ResultCard label="Tax Efficiency" value={100 - results.effectiveTaxRate} isCurrency={false} isPercentage={true} subText="Percentage of revenue retained" />
@@ -289,7 +288,8 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white p-10 rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden relative">
+            {/* STATEMENT SECTION - Forced to start clean to look like a separate document page */}
+            <div className="bg-white p-10 rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden relative print-force-new-page">
               <div className="absolute top-0 right-0 p-8 opacity-5">
                  <svg className="w-32 h-32 text-orange-600" fill="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
               </div>
@@ -383,18 +383,6 @@ const App: React.FC = () => {
           </div>
         </div>
       </main>
-
-      <footer className="mt-20 text-center py-12 border-t border-slate-200 no-print">
-        <div className="flex justify-center items-center gap-4 mb-6">
-           <div className="w-8 h-8 rounded-full border-2 border-orange-500 flex items-center justify-center bg-[#1a1a1a]">
-              <span className="text-[10px] font-black text-white">PLT</span>
-           </div>
-           <span className="text-[11px] font-black text-slate-900 uppercase tracking-[0.5em]">PayLessTax Consultants</span>
-        </div>
-        <p className="text-slate-300 text-[10px] font-black uppercase tracking-[0.2em] max-w-2xl mx-auto leading-loose px-6">
-          Strategic Individual Tax Assessment Suite • Proprietary Methodology • All Rights Reserved &copy; {new Date().getFullYear()}
-        </p>
-      </footer>
     </div>
   );
 };

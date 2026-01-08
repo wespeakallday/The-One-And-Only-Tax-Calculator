@@ -12,7 +12,7 @@ interface NumberInputProps {
 const NumberInput: React.FC<NumberInputProps> = ({ label, value, onChange, prefix = "R", helpText }) => {
   return (
     <div className="mb-6">
-      <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">
+      <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest whitespace-nowrap overflow-hidden text-ellipsis">
         {label}
       </label>
       <div className="relative rounded-2xl">

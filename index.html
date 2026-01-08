@@ -54,31 +54,57 @@
                 display: block !important;
                 width: 100% !important;
                 margin: 0 !important;
-                padding: 20px !important;
+                padding: 40px !important;
             }
             .grid {
                 display: block !important;
             }
-            .lg\:col-span-5, .lg\:col-span-7 {
+            /* Reset grid to single column for print */
+            .lg\:col-span-5, .lg\:col-span-7, .lg\:col-span-12 {
                 width: 100% !important;
-                margin-bottom: 20px !important;
+                margin-bottom: 0 !important;
+                display: block !important;
             }
-            section, .bg-white {
+            
+            /* Prevent blocks from splitting */
+            section, 
+            .bg-white, 
+            .bg-slate-50,
+            .bg-\[\#1a1a1a\],
+            [class*="ResultCard"],
+            .recharts-responsive-container {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
                 border: 1px solid #e2e8f0 !important;
-                break-inside: avoid;
                 box-shadow: none !important;
-                margin-bottom: 1.5rem !important;
+                margin-bottom: 3rem !important;
+                position: relative !important;
+                display: block !important;
             }
-            .shadow-sm, .shadow-md, .shadow-lg {
-                box-shadow: none !important;
+
+            /* Specifically force Results to start fresh if needed */
+            .print-force-new-page {
+                break-before: page !important;
+                page-break-before: always !important;
             }
+
             input {
                 border: none !important;
                 background: transparent !important;
-                /* Removed padding-left: 0 to prevent overlap with prefix */
             }
+            
+            /* Ensure text is visible on dark backgrounds in print */
+            .bg-\[\#1a1a1a\] {
+                background-color: #1a1a1a !important;
+                color: white !important;
+            }
+            
+            .text-white {
+                color: white !important;
+            }
+
             .recharts-responsive-container {
-                page-break-inside: avoid;
+                max-height: 400px;
             }
         }
     </style>
