@@ -46,6 +46,7 @@
                 background-color: white !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                font-size: 11px !important; /* Shrink base text for more density */
             }
             header, nav, footer, button, .no-print {
                 display: none !important;
@@ -54,7 +55,7 @@
                 display: block !important;
                 width: 100% !important;
                 margin: 0 !important;
-                padding: 40px !important;
+                padding: 15px !important; /* Reduced from 40px */
             }
             .grid {
                 display: block !important;
@@ -66,7 +67,12 @@
                 display: block !important;
             }
             
-            /* Prevent blocks from splitting */
+            /* Target large paddings in report sections to save space */
+            .p-8, .p-10, .p-6 {
+                padding: 12px !important;
+            }
+
+            /* Prevent blocks from splitting but reduce vertical gaps */
             section, 
             .bg-white, 
             .bg-slate-50,
@@ -77,7 +83,7 @@
                 page-break-inside: avoid !important;
                 border: 1px solid #e2e8f0 !important;
                 box-shadow: none !important;
-                margin-bottom: 3rem !important;
+                margin-bottom: 1rem !important; /* Reduced from 3rem to fit more content */
                 position: relative !important;
                 display: block !important;
             }
@@ -91,6 +97,7 @@
             input {
                 border: none !important;
                 background: transparent !important;
+                padding: 4px !important;
             }
             
             /* Ensure text is visible on dark backgrounds in print */
@@ -103,9 +110,18 @@
                 color: white !important;
             }
 
+            /* Shrink chart size for print */
             .recharts-responsive-container {
-                max-height: 400px;
+                max-height: 250px !important;
+                margin: 0 auto !important;
             }
+
+            /* Adjust titles and text for print density */
+            h1 { font-size: 1.5rem !important; }
+            h2 { font-size: 1.1rem !important; }
+            .text-3xl { font-size: 1.4rem !important; }
+            .text-4xl { font-size: 1.6rem !important; }
+            .text-5xl { font-size: 2rem !important; }
         }
     </style>
 <script type="importmap">
