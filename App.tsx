@@ -249,8 +249,8 @@ const App: React.FC = () => {
             </section>
           </div>
 
-          {/* RESULTS COLUMN - Forced to new page on print if needed via CSS classes */}
-          <div className="lg:col-span-7 space-y-8 print-force-new-page">
+          {/* RESULTS COLUMN */}
+          <div className="lg:col-span-7 space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ResultCard label="Monthly Net Pay" value={results.monthlyTakeHome} highlight={true} subText="Total monthly disposable income" />
               <ResultCard label="Tax Efficiency" value={100 - results.effectiveTaxRate} isCurrency={false} isPercentage={true} subText="Percentage of revenue retained" />
@@ -288,8 +288,8 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* STATEMENT SECTION - Forced to start clean to look like a separate document page */}
-            <div className="bg-white p-10 rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden relative print-force-new-page">
+            {/* STATEMENT SECTION */}
+            <div className="bg-white p-10 rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden relative statement-section">
               <div className="absolute top-0 right-0 p-8 opacity-5">
                  <svg className="w-32 h-32 text-orange-600" fill="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
               </div>

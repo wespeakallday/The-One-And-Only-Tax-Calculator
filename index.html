@@ -38,15 +38,20 @@
         }
 
         @media print {
+            @page {
+                size: A4;
+                margin: 0.5cm;
+            }
             * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                transition: none !important;
             }
             body {
                 background-color: white !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                font-size: 11px !important; /* Shrink base text for more density */
+                font-size: 10px !important; /* Smaller base font for density */
             }
             header, nav, footer, button, .no-print {
                 display: none !important;
@@ -55,73 +60,92 @@
                 display: block !important;
                 width: 100% !important;
                 margin: 0 !important;
-                padding: 15px !important; /* Reduced from 40px */
+                padding: 0 !important;
             }
             .grid {
-                display: block !important;
-            }
-            /* Reset grid to single column for print */
-            .lg\:col-span-5, .lg\:col-span-7, .lg\:col-span-12 {
-                width: 100% !important;
-                margin-bottom: 0 !important;
-                display: block !important;
+                display: grid !important;
+                gap: 0.5rem !important; /* Extremely tight gaps */
             }
             
-            /* Target large paddings in report sections to save space */
-            .p-8, .p-10, .p-6 {
-                padding: 12px !important;
+            /* Keep 2 columns on print if they fit, or stack tightly */
+            .lg\:grid-cols-12 {
+                display: grid !important;
+                grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+            }
+            .lg\:col-span-5 { grid-column: span 5 / span 5 !important; }
+            .lg\:col-span-7 { grid-column: span 7 / span 7 !important; }
+
+            /* Aggressively shrink paddings */
+            .p-8, .p-10, .p-6, .p-5 {
+                padding: 10px !important;
+            }
+            .mt-10, .mb-10, .mb-8, .my-8 {
+                margin-top: 5px !important;
+                margin-bottom: 5px !important;
+            }
+            .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+                margin-top: 0.5rem !important;
+            }
+            .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+                margin-top: 0.25rem !important;
             }
 
-            /* Prevent blocks from splitting but reduce vertical gaps */
+            /* Remove page break forcing */
+            .print-force-new-page {
+                break-before: auto !important;
+                page-break-before: auto !important;
+                margin-top: 0 !important;
+            }
+
             section, 
             .bg-white, 
             .bg-slate-50,
             .bg-\[\#1a1a1a\],
-            [class*="ResultCard"],
-            .recharts-responsive-container {
+            .rounded-\[2rem\], .rounded-\[2\.5rem\], .rounded-3xl {
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
-                border: 1px solid #e2e8f0 !important;
+                border: 1px solid #f1f5f9 !important;
                 box-shadow: none !important;
-                margin-bottom: 1rem !important; /* Reduced from 3rem to fit more content */
-                position: relative !important;
-                display: block !important;
+                margin-bottom: 0.5rem !important;
+                border-radius: 12px !important; /* Smaller radius for cleaner print */
             }
 
-            /* Specifically force Results to start fresh if needed */
-            .print-force-new-page {
-                break-before: page !important;
-                page-break-before: always !important;
-            }
-
-            input {
-                border: none !important;
-                background: transparent !important;
-                padding: 4px !important;
-            }
-            
-            /* Ensure text is visible on dark backgrounds in print */
-            .bg-\[\#1a1a1a\] {
-                background-color: #1a1a1a !important;
-                color: white !important;
-            }
-            
-            .text-white {
-                color: white !important;
-            }
-
-            /* Shrink chart size for print */
+            /* Shrink chart size significantly */
             .recharts-responsive-container {
-                max-height: 250px !important;
-                margin: 0 auto !important;
+                max-height: 180px !important;
+                width: 100% !important;
+                margin: 0 !important;
             }
 
-            /* Adjust titles and text for print density */
-            h1 { font-size: 1.5rem !important; }
-            h2 { font-size: 1.1rem !important; }
-            .text-3xl { font-size: 1.4rem !important; }
-            .text-4xl { font-size: 1.6rem !important; }
-            .text-5xl { font-size: 2rem !important; }
+            /* Result cards shrink */
+            [class*="ResultCard"] {
+                padding: 8px !important;
+            }
+            [class*="ResultCard"] .text-3xl {
+                font-size: 1.2rem !important;
+            }
+
+            /* Shrink font sizes */
+            h1 { font-size: 1.2rem !important; }
+            h2 { font-size: 1rem !important; }
+            .text-3xl { font-size: 1.1rem !important; }
+            .text-4xl { font-size: 1.3rem !important; }
+            .text-5xl { font-size: 1.5rem !important; }
+            
+            p.text-sm { font-size: 9px !important; }
+            .text-\[11px\], .text-\[10px\], .text-\[12px\] {
+                font-size: 8px !important;
+            }
+
+            /* Hide decorative icons to save vertical space */
+            .absolute.top-0.right-0.p-8.opacity-5 {
+                display: none !important;
+            }
+            
+            /* Statement section specific tightening */
+            .statement-section .space-y-5 > :not([hidden]) ~ :not([hidden]) {
+                margin-top: 0.25rem !important;
+            }
         }
     </style>
 <script type="importmap">
