@@ -292,10 +292,6 @@ const App: React.FC = () => {
 
             {/* STATEMENT SECTION */}
             <div className="bg-white p-10 rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden relative statement-section">
-              <div className="absolute top-0 right-0 p-8 opacity-5">
-                 <svg className="w-32 h-32 text-orange-600" fill="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-              </div>
-
               <div className="flex justify-between items-start mb-10">
                 <div>
                   <h2 className="text-[12px] font-black text-[#1a1a1a] uppercase tracking-[0.4em]">Official Statement of Account</h2>
@@ -360,20 +356,13 @@ const App: React.FC = () => {
                 </div>
 
                 <div className={`p-8 rounded-[2.5rem] border-2 flex flex-col md:flex-row justify-between items-center gap-6 transition-all ${results.isRefund ? 'bg-[#ff4d29] border-[#ff4d29] text-white shadow-2xl shadow-orange-500/30' : 'bg-white border-slate-900 shadow-sm'}`}>
-                   <div>
+                   <div className="w-full text-center md:text-left">
                      <p className={`text-[10px] font-black uppercase tracking-[0.4em] mb-2 ${results.isRefund ? 'text-white/70' : 'text-slate-400'}`}>
-                        {results.isRefund ? 'Estimated Refund Due' : 'Balance Owed to Revenue'}
+                        {results.isRefund ? 'Estimated Refund Due' : 'Balance Owed to Receiver of Revenue'}
                      </p>
                      <p className={`text-4xl font-black ${results.isRefund ? 'text-white' : 'text-slate-900'}`}>
                         {currencyFormat(Math.abs(results.taxDifference))}
                      </p>
-                   </div>
-                   <div className={`${results.isRefund ? 'text-white' : 'text-orange-600'}`}>
-                      {results.isRefund ? (
-                        <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3 1.343 3 3-1.343 3-3 3m0-18c-1.657 0-3 1.343-3 3s1.343 3 3 3 3 1.343 3 3-1.343 3-3 3m0-18v18m-5-9h10" /></svg>
-                      ) : (
-                        <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                      )}
                    </div>
                 </div>
 
