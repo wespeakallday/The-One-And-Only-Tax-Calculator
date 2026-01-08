@@ -248,55 +248,57 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* ADDITIONAL BUSINESS ACTIVITIES BOX */}
-                <div className="p-6 bg-[#1a1a1a] rounded-3xl border border-slate-800 text-white shadow-xl">
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-widest">Additional Business Activities</h3>
-                      <p className="text-[9px] text-slate-400 font-medium uppercase mt-1 tracking-tight">Rental & Trading (Non-PAYE)</p>
+                {/* ADDITIONAL BUSINESS ACTIVITIES BOX - Forced to Page 3 in print via container */}
+                <div className="print-page-break space-y-8">
+                  <div className="p-6 bg-[#1a1a1a] rounded-3xl border border-slate-800 text-white shadow-xl">
+                    <div className="flex items-center justify-between mb-6">
+                      <div>
+                        <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-widest">Additional Business Activities</h3>
+                        <p className="text-[9px] text-slate-400 font-medium uppercase mt-1 tracking-tight">Rental & Trading (Non-PAYE)</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer no-print">
+                        <input type="checkbox" checked={deductions.additionalActivityEnabled} onChange={(e) => setDeductions({...deductions, additionalActivityEnabled: e.target.checked})} className="sr-only peer" />
+                        <div className="w-12 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-600"></div>
+                      </label>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer no-print">
-                      <input type="checkbox" checked={deductions.additionalActivityEnabled} onChange={(e) => setDeductions({...deductions, additionalActivityEnabled: e.target.checked})} className="sr-only peer" />
-                      <div className="w-12 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-600"></div>
-                    </label>
+                    {deductions.additionalActivityEnabled && (
+                      <div className="grid grid-cols-1 gap-x-5 animate-fadeIn">
+                        <div className="mb-4 pt-4 border-t border-slate-800">
+                          <h4 className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Rental Portfolio</h4>
+                          <NumberInput label="Annual Rental Revenue" value={income.rentalIncome} onChange={(val) => setIncome({...income, rentalIncome: val})} placeholder="0.00" />
+                          <NumberInput label="Operating Expenditure" value={deductions.rentalExpenses} onChange={(val) => setDeductions({...deductions, rentalExpenses: val})} placeholder="0.00" />
+                        </div>
+                        <div className="pt-4 border-t border-slate-800">
+                          <h4 className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Trading / Side Hustle</h4>
+                          <NumberInput label="Side-Hustle Revenue" value={income.tradingIncome} onChange={(val) => setIncome({...income, tradingIncome: val})} placeholder="0.00" />
+                          <NumberInput label="Direct Business Costs" value={deductions.tradingExpenses} onChange={(val) => setDeductions({...deductions, tradingExpenses: val})} placeholder="0.00" />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {deductions.additionalActivityEnabled && (
-                    <div className="grid grid-cols-1 gap-x-5 animate-fadeIn">
-                      <div className="mb-4 pt-4 border-t border-slate-800">
-                        <h4 className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Rental Portfolio</h4>
-                        <NumberInput label="Annual Rental Revenue" value={income.rentalIncome} onChange={(val) => setIncome({...income, rentalIncome: val})} placeholder="0.00" />
-                        <NumberInput label="Operating Expenditure" value={deductions.rentalExpenses} onChange={(val) => setDeductions({...deductions, rentalExpenses: val})} placeholder="0.00" />
-                      </div>
-                      <div className="pt-4 border-t border-slate-800">
-                        <h4 className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Trading / Side Hustle</h4>
-                        <NumberInput label="Side-Hustle Revenue" value={income.tradingIncome} onChange={(val) => setIncome({...income, tradingIncome: val})} placeholder="0.00" />
-                        <NumberInput label="Direct Business Costs" value={deductions.tradingExpenses} onChange={(val) => setDeductions({...deductions, tradingExpenses: val})} placeholder="0.00" />
-                      </div>
-                    </div>
-                  )}
-                </div>
 
-                <div className="p-6 bg-[#1a1a1a] rounded-3xl border border-slate-800 text-white shadow-xl">
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-widest">Home Office Deduction</h3>
-                      <p className="text-[9px] text-slate-400 font-medium uppercase mt-1">Section 11(a) / 23(b) Claims</p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer no-print">
-                      <input type="checkbox" checked={deductions.wfhEnabled} onChange={(e) => setDeductions({...deductions, wfhEnabled: e.target.checked})} className="sr-only peer" />
-                      <div className="w-12 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-600"></div>
-                    </label>
-                  </div>
-                  {deductions.wfhEnabled && (
-                    <div className="grid grid-cols-1 gap-x-5 animate-fadeIn">
-                      <NumberInput label="Total Home m²" prefix="#" value={deductions.wfhTotalArea} onChange={(val) => setDeductions({...deductions, wfhTotalArea: val})} placeholder="0" />
-                      <NumberInput label="Dedicated Office m²" prefix="#" value={deductions.wfhOfficeArea} onChange={(val) => setDeductions({...deductions, wfhOfficeArea: val})} placeholder="0" />
-                      <div className="grid grid-cols-1 gap-x-5 mt-2">
-                        <NumberInput label="Rent / Interest" value={deductions.wfhRentInterest} onChange={(val) => setDeductions({...deductions, wfhRentInterest: val})} placeholder="0.00" />
-                        <NumberInput label="Utilities / Cleaning" value={deductions.wfhElectricityWater + deductions.wfhCleaning} onChange={(val) => setDeductions({...deductions, wfhElectricityWater: val})} placeholder="0.00" />
+                  <div className="p-6 bg-[#1a1a1a] rounded-3xl border border-slate-800 text-white shadow-xl">
+                    <div className="flex items-center justify-between mb-6">
+                      <div>
+                        <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-widest">Home Office Deduction</h3>
+                        <p className="text-[9px] text-slate-400 font-medium uppercase mt-1">Section 11(a) / 23(b) Claims</p>
                       </div>
+                      <label className="relative inline-flex items-center cursor-pointer no-print">
+                        <input type="checkbox" checked={deductions.wfhEnabled} onChange={(e) => setDeductions({...deductions, wfhEnabled: e.target.checked})} className="sr-only peer" />
+                        <div className="w-12 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-600"></div>
+                      </label>
                     </div>
-                  )}
+                    {deductions.wfhEnabled && (
+                      <div className="grid grid-cols-1 gap-x-5 animate-fadeIn">
+                        <NumberInput label="Total Home m²" prefix="#" value={deductions.wfhTotalArea} onChange={(val) => setDeductions({...deductions, wfhTotalArea: val})} placeholder="0" />
+                        <NumberInput label="Dedicated Office m²" prefix="#" value={deductions.wfhOfficeArea} onChange={(val) => setDeductions({...deductions, wfhOfficeArea: val})} placeholder="0" />
+                        <div className="grid grid-cols-1 gap-x-5 mt-2">
+                          <NumberInput label="Rent / Interest" value={deductions.wfhRentInterest} onChange={(val) => setDeductions({...deductions, wfhRentInterest: val})} placeholder="0.00" />
+                          <NumberInput label="Utilities / Cleaning" value={deductions.wfhElectricityWater + deductions.wfhCleaning} onChange={(val) => setDeductions({...deductions, wfhElectricityWater: val})} placeholder="0.00" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </section>
