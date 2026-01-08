@@ -248,8 +248,8 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* ADDITIONAL BUSINESS ACTIVITIES BOX - Forced to Page 3 in print via container */}
-                <div className="print-page-break space-y-8">
+                {/* ADDITIONAL BUSINESS ACTIVITIES BOX - container class removed for single page flow */}
+                <div className="space-y-8">
                   <div className="p-6 bg-[#1a1a1a] rounded-3xl border border-slate-800 text-white shadow-xl">
                     <div className="flex items-center justify-between mb-6">
                       <div>
