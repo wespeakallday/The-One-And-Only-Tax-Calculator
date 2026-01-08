@@ -17,12 +17,16 @@ const App: React.FC = () => {
     bonus: 0,
     annualTravelAllowance: 0,
     taxPaidAlready: 0,
+    rentalIncome: 0,
+    tradingIncome: 0,
   });
 
   const [deductions, setDeductions] = useState<DeductionData>({
     retirementAnnuity: 0,
     medicalAidMembers: 0,
     medicalAidDependents: 0,
+    medicalAidMonthlyPremium: 0,
+    medicalExpensesUncovered: 0,
     contractorExpenses: 0,
     commissionExpenses: 0,
     wfhEnabled: false,
@@ -31,6 +35,9 @@ const App: React.FC = () => {
     wfhRentInterest: 0,
     wfhElectricityWater: 0,
     wfhCleaning: 0,
+    additionalActivityEnabled: false,
+    rentalExpenses: 0,
+    tradingExpenses: 0,
     businessKms: 0,
     vehicleValue: 0,
   });
@@ -60,6 +67,8 @@ const App: React.FC = () => {
       ["Contractor Fees", income.annualContractorIncome],
       ["Travel Allowance", income.annualTravelAllowance],
       ["Bonus", income.bonus],
+      ["Rental Income", deductions.additionalActivityEnabled ? income.rentalIncome : 0],
+      ["Trading Income", deductions.additionalActivityEnabled ? income.tradingIncome : 0],
       ["TOTAL GROSS", results.grossIncome],
       ["", ""],
       ["TAX PAID TO DATE", income.taxPaidAlready],
@@ -70,6 +79,7 @@ const App: React.FC = () => {
       ["WFH Deduction", results.deductionsBreakdown.wfh],
       ["Contractor Expenses", results.deductionsBreakdown.contractor],
       ["Commission Expenses", results.deductionsBreakdown.commission],
+      ["Additional Activity Expenses", results.deductionsBreakdown.additionalActivities],
       ["TOTAL DEDUCTIONS", results.deductionsBreakdown.total],
       ["", ""],
       ["SUMMARY", ""],
@@ -77,7 +87,8 @@ const App: React.FC = () => {
       ["Tax Before Rebates", results.taxBeforeRebate],
       ["Primary Rebate", results.primaryRebate],
       ["Age Rebates", results.ageRebate],
-      ["Medical Tax Credits", results.medicalCredits],
+      ["Medical Scheme Credits", results.medicalCredits],
+      ["Additional Medical Credits", results.additionalMedicalCredits],
       ["Annual Liability", results.totalTax],
       ["PAYE Paid", results.taxPaidAlready],
       [results.isRefund ? "ESTIMATED REFUND" : "AMOUNT OWED", Math.abs(results.taxDifference)],
@@ -129,20 +140,27 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex bg-slate-100 p-1.5 rounded-2xl w-full md:auto overflow-x-auto border border-slate-200">
-            {TAX_YEARS.map((year) => (
-              <button
-                key={year}
-                onClick={() => setSelectedYear(year)}
-                className={`flex-1 md:flex-none px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  selectedYear === year 
-                    ? 'bg-white text-orange-600 shadow-lg shadow-orange-200/50 ring-1 ring-slate-200' 
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
-              >
-                {year}
-              </button>
-            ))}
+          <div className="relative w-full md:w-48 no-print">
+            <label htmlFor="tax-year-select" className="absolute -top-2 left-3 px-1 bg-white text-[9px] font-black text-slate-400 uppercase tracking-widest z-10">
+              Tax Year
+            </label>
+            <select
+              id="tax-year-select"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value as TaxYear)}
+              className="appearance-none w-full bg-slate-50 border border-slate-200 text-slate-900 py-3 px-5 pr-10 rounded-2xl text-xs font-black uppercase tracking-widest cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#ff4d29] focus:border-transparent transition-all shadow-sm"
+            >
+              {TAX_YEARS.map((year) => (
+                <option key={year} value={year}>
+                  {year} Assessment
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-orange-500">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+              </svg>
+            </div>
           </div>
         </div>
       </header>
@@ -170,7 +188,13 @@ const App: React.FC = () => {
           <div className="lg:col-span-5 space-y-8">
             <section className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
               <h2 className="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-6">Assessee Profile</h2>
-              <div className="grid grid-cols-1 gap-4 p-2 bg-slate-50 rounded-2xl border border-slate-200">
+              <div className="print-only mb-4 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Assessment Period</span>
+                <span className="text-sm font-black text-orange-600 block mb-3 uppercase tracking-tighter">{selectedYear} Year of Assessment</span>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Selected Age Category</span>
+                <span className="text-sm font-black text-[#1a1a1a] uppercase">{ageGroup}</span>
+              </div>
+              <div className="grid grid-cols-1 gap-4 p-2 bg-slate-50 rounded-2xl border border-slate-200 no-print">
                 {Object.values(AgeGroup).map((group) => (
                   <button
                     key={group}
@@ -206,9 +230,11 @@ const App: React.FC = () => {
                 <div className="p-6 bg-slate-50 rounded-3xl border border-slate-200 shadow-sm">
                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-6 border-l-4 border-orange-500 pl-3">Statutory Relief</h3>
                   <div className="grid grid-cols-1 gap-5">
-                    <NumberInput label="Retirement Fund" value={deductions.retirementAnnuity} onChange={(val) => setDeductions({...deductions, retirementAnnuity: val})} placeholder="0.00" />
-                    <NumberInput label="Med Members" prefix="#" value={deductions.medicalAidMembers} onChange={(val) => setDeductions({...deductions, medicalAidMembers: val})} placeholder="0" />
+                    <NumberInput label="Retirement Annuity Contributions" value={deductions.retirementAnnuity} onChange={(val) => setDeductions({...deductions, retirementAnnuity: val})} placeholder="0.00" />
+                    <NumberInput label="Monthly Medical Aid Premium" value={deductions.medicalAidMonthlyPremium} onChange={(val) => setDeductions({...deductions, medicalAidMonthlyPremium: val})} placeholder="0.00" helpText="Total monthly scheme contributions" />
+                    <NumberInput label="Main Member/Spouse" prefix="#" value={deductions.medicalAidMembers} onChange={(val) => setDeductions({...deductions, medicalAidMembers: val})} placeholder="0" />
                     <NumberInput label="Dependents" prefix="#" value={deductions.medicalAidDependents} onChange={(val) => setDeductions({...deductions, medicalAidDependents: val})} placeholder="0" />
+                    <NumberInput label="Medical Aid Expenses (Uncovered)" value={deductions.medicalExpensesUncovered} onChange={(val) => setDeductions({...deductions, medicalExpensesUncovered: val})} placeholder="0.00" helpText="Expenses NOT covered by medical aid" />
                   </div>
                 </div>
 
@@ -220,6 +246,34 @@ const App: React.FC = () => {
                     <NumberInput label="Travel Log Business Kms" prefix="#" value={deductions.businessKms} onChange={(val) => setDeductions({...deductions, businessKms: val})} placeholder="0" />
                     <NumberInput label="Vehicle Purchase Value" value={deductions.vehicleValue} onChange={(val) => setDeductions({...deductions, vehicleValue: val})} helpText="Total value incl. VAT" placeholder="0.00" />
                   </div>
+                </div>
+
+                {/* ADDITIONAL BUSINESS ACTIVITIES BOX */}
+                <div className="p-6 bg-[#1a1a1a] rounded-3xl border border-slate-800 text-white shadow-xl">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-widest">Additional Business Activities</h3>
+                      <p className="text-[9px] text-slate-400 font-medium uppercase mt-1 tracking-tight">Rental & Trading (Non-PAYE)</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer no-print">
+                      <input type="checkbox" checked={deductions.additionalActivityEnabled} onChange={(e) => setDeductions({...deductions, additionalActivityEnabled: e.target.checked})} className="sr-only peer" />
+                      <div className="w-12 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-600"></div>
+                    </label>
+                  </div>
+                  {deductions.additionalActivityEnabled && (
+                    <div className="grid grid-cols-1 gap-x-5 animate-fadeIn">
+                      <div className="mb-4 pt-4 border-t border-slate-800">
+                        <h4 className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Rental Portfolio</h4>
+                        <NumberInput label="Annual Rental Revenue" value={income.rentalIncome} onChange={(val) => setIncome({...income, rentalIncome: val})} placeholder="0.00" />
+                        <NumberInput label="Operating Expenditure" value={deductions.rentalExpenses} onChange={(val) => setDeductions({...deductions, rentalExpenses: val})} placeholder="0.00" />
+                      </div>
+                      <div className="pt-4 border-t border-slate-800">
+                        <h4 className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Trading / Side Hustle</h4>
+                        <NumberInput label="Side-Hustle Revenue" value={income.tradingIncome} onChange={(val) => setIncome({...income, tradingIncome: val})} placeholder="0.00" />
+                        <NumberInput label="Direct Business Costs" value={deductions.tradingExpenses} onChange={(val) => setDeductions({...deductions, tradingExpenses: val})} placeholder="0.00" />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-6 bg-[#1a1a1a] rounded-3xl border border-slate-800 text-white shadow-xl">
@@ -305,6 +359,10 @@ const App: React.FC = () => {
 
               <div className="space-y-5">
                 <div className="flex justify-between text-sm py-1">
+                  <span className="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Client Age Category</span>
+                  <span className="text-slate-900 font-black uppercase text-[10px]">{ageGroup}</span>
+                </div>
+                <div className="flex justify-between text-sm py-1">
                   <span className="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Annual Gross Remuneration</span>
                   <span className="text-slate-900 font-black">{currencyFormat(results.grossIncome)}</span>
                 </div>
@@ -329,9 +387,15 @@ const App: React.FC = () => {
                     </div>
                   )}
                   <div className="flex justify-between text-[11px] text-slate-600 font-bold">
-                    <span className="uppercase tracking-widest">Medical Sector Tax Credits</span>
+                    <span className="uppercase tracking-widest">Section 6A Medical Credits</span>
                     <span className="text-slate-900">+ {currencyFormat(results.medicalCredits)}</span>
                   </div>
+                  {results.additionalMedicalCredits > 0 && (
+                    <div className="flex justify-between text-[11px] text-slate-600 font-bold">
+                      <span className="uppercase tracking-widest">Section 6B Medical Credits</span>
+                      <span className="text-slate-900">+ {currencyFormat(results.additionalMedicalCredits)}</span>
+                    </div>
+                  )}
                   <div className="pt-3 border-t border-slate-200 flex justify-between text-xs text-[#1a1a1a]">
                     <span className="font-black uppercase tracking-[0.2em]">Total Statutory Relief</span>
                     <span className="font-black">+ {currencyFormat(results.totalRebatesAndCredits)}</span>

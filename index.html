@@ -37,6 +37,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Utility for print visibility */
+        .print-only {
+            display: none !important;
+        }
+
         @media print {
             @page {
                 size: A4;
@@ -51,10 +56,13 @@
                 background-color: white !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                font-size: 10px !important; /* Smaller base font for density */
+                font-size: 10px !important;
             }
             header, nav, footer, button, .no-print {
                 display: none !important;
+            }
+            .print-only {
+                display: block !important;
             }
             .main-content {
                 display: block !important;
@@ -64,10 +72,9 @@
             }
             .grid {
                 display: grid !important;
-                gap: 0.5rem !important; /* Extremely tight gaps */
+                gap: 0.5rem !important;
             }
             
-            /* Keep 2 columns on print if they fit, or stack tightly */
             .lg\:grid-cols-12 {
                 display: grid !important;
                 grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
@@ -75,7 +82,6 @@
             .lg\:col-span-5 { grid-column: span 5 / span 5 !important; }
             .lg\:col-span-7 { grid-column: span 7 / span 7 !important; }
 
-            /* Aggressively shrink paddings */
             .p-8, .p-10, .p-6, .p-5 {
                 padding: 10px !important;
             }
@@ -90,13 +96,6 @@
                 margin-top: 0.25rem !important;
             }
 
-            /* Remove page break forcing */
-            .print-force-new-page {
-                break-before: auto !important;
-                page-break-before: auto !important;
-                margin-top: 0 !important;
-            }
-
             section, 
             .bg-white, 
             .bg-slate-50,
@@ -107,17 +106,24 @@
                 border: 1px solid #f1f5f9 !important;
                 box-shadow: none !important;
                 margin-bottom: 0.5rem !important;
-                border-radius: 12px !important; /* Smaller radius for cleaner print */
+                border-radius: 12px !important;
             }
 
-            /* Shrink chart size significantly */
+            /* Ensure input values are visible */
+            input {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                font-weight: bold !important;
+                color: #000 !important;
+            }
+
             .recharts-responsive-container {
                 max-height: 180px !important;
                 width: 100% !important;
                 margin: 0 !important;
             }
 
-            /* Result cards shrink */
             [class*="ResultCard"] {
                 padding: 8px !important;
             }
@@ -125,7 +131,6 @@
                 font-size: 1.2rem !important;
             }
 
-            /* Shrink font sizes */
             h1 { font-size: 1.2rem !important; }
             h2 { font-size: 1rem !important; }
             .text-3xl { font-size: 1.1rem !important; }
@@ -137,12 +142,10 @@
                 font-size: 8px !important;
             }
 
-            /* Hide decorative icons to save vertical space */
             .absolute.top-0.right-0.p-8.opacity-5 {
                 display: none !important;
             }
             
-            /* Statement section specific tightening */
             .statement-section .space-y-5 > :not([hidden]) ~ :not([hidden]) {
                 margin-top: 0.25rem !important;
             }

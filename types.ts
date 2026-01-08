@@ -6,12 +6,17 @@ export interface IncomeData {
   bonus: number;
   annualTravelAllowance: number;
   taxPaidAlready: number; // Capture PAYE paid to date
+  // Additional Income (Non-PAYE)
+  rentalIncome: number;
+  tradingIncome: number;
 }
 
 export interface DeductionData {
   retirementAnnuity: number;
   medicalAidMembers: number;
   medicalAidDependents: number;
+  medicalAidMonthlyPremium: number;
+  medicalExpensesUncovered: number;
   contractorExpenses: number;
   commissionExpenses: number;
   wfhEnabled: boolean;
@@ -20,6 +25,10 @@ export interface DeductionData {
   wfhRentInterest: number;
   wfhElectricityWater: number;
   wfhCleaning: number;
+  // Additional Activity Toggle & Expenses
+  additionalActivityEnabled: boolean;
+  rentalExpenses: number;
+  tradingExpenses: number;
   // Travel Allowance specific
   businessKms: number;
   vehicleValue: number;
@@ -32,6 +41,7 @@ export interface TaxResult {
   primaryRebate: number;
   ageRebate: number;
   medicalCredits: number;
+  additionalMedicalCredits: number; // Section 6B
   totalRebatesAndCredits: number;
   totalTax: number;
   taxPaidAlready: number;
@@ -46,6 +56,7 @@ export interface TaxResult {
     contractor: number;
     commission: number;
     travel: number;
+    additionalActivities: number;
     total: number;
   };
 }
